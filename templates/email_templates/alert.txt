@@ -1,0 +1,12 @@
+Subject: URGENT SYSTEM ALERT - Unauthorized Access Detected
+
+Attention, system administrator.
+
+We have detected unusual activity on your network.
+Multiple login attempts from unknown IP addresses have been logged.
+
+Please review your security protocols immediately.
+This is an automated alert from the CyberMail Injector.
+
+---
+[Automated System Message]
