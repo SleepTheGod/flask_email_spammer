@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberMail Injector // Access Granted</title>
+    <title>SMTP Overload Initiator // Attack Mode</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
@@ -13,6 +13,8 @@
             --accent-color: #ff0000; /* For errors or warnings */
             --input-bg: #1a1a1a;
             --border-color: #00cc00;
+            --button-color: #ff0000; /* Aggressive button color */
+            --button-text-color: #ffffff;
         }
 
         body {
@@ -30,28 +32,42 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             background-color: #111;
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 15px var(--border-color);
+            box-shadow: 0 0 20px var(--border-color);
             padding: 2rem;
             box-sizing: border-box;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px var(--border-color); }
+            to { box-shadow: 0 0 25px var(--border-color), 0 0 5px var(--text-color); }
         }
 
         h1, h2 {
             color: var(--text-color);
-            text-shadow: 0 0 5px var(--text-color);
+            text-shadow: 0 0 8px var(--text-color);
             margin-bottom: 1.5rem;
             text-align: center;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-top: 0;
+            animation: text-flicker 0.1s infinite alternate;
+        }
+
+        @keyframes text-flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.9; text-shadow: 0 0 5px var(--text-color); }
+            100% { opacity: 1; text-shadow: 0 0 8px var(--text-color); }
         }
 
         h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-top: 2rem;
         }
 
@@ -62,10 +78,10 @@
             margin-bottom: 2rem;
         }
 
-        input[type="email"],
         input[type="text"],
+        textarea,
         select {
-            width: calc(100% - 1rem); /* Account for padding */
+            width: calc(100% - 1rem);
             padding: 0.75rem;
             background: var(--input-bg);
             color: var(--text-color);
@@ -75,17 +91,19 @@
             font-family: 'VT323', monospace;
             font-size: 1rem;
             transition: all 0.2s ease-in-out;
+            resize: vertical;
+            min-height: 80px; /* For textarea */
         }
 
-        input[type="email"]:focus,
         input[type="text"]:focus,
+        textarea:focus,
         select:focus {
             border-color: var(--text-color);
             box-shadow: 0 0 12px var(--text-color);
         }
 
         select {
-            appearance: none; /* Remove default select arrow */
+            appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff00'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
@@ -95,38 +113,45 @@
         }
 
         button {
-            background: var(--border-color);
-            color: var(--bg-color);
-            padding: 0.75rem 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 0 10px var(--border-color);
+            background: var(--button-color);
+            color: var(--button-text-color);
+            padding: 1rem 3rem;
+            border: 1px solid var(--button-color);
+            box-shadow: 0 0 15px var(--button-color);
             cursor: pointer;
             font-family: 'VT323', monospace;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             text-transform: uppercase;
             transition: all 0.2s ease-in-out;
             align-self: center;
             width: fit-content;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); box-shadow: 0 0 10px var(--button-color); }
+            to { transform: scale(1.02); box-shadow: 0 0 20px var(--button-color); }
         }
 
         button:hover {
-            background: var(--text-color);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--text-color);
-            transform: translateY(-2px);
+            background: var(--accent-color);
+            color: var(--button-text-color);
+            box-shadow: 0 0 25px var(--accent-color);
+            transform: translateY(-2px) scale(1.03);
         }
 
         pre {
             background: var(--input-bg);
             padding: 1.5rem;
             border: 1px solid var(--border-color);
-            box-shadow: inset 0 0 8px rgba(0, 255, 0, 0.3);
-            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.3);
+            overflow-y: scroll; /* Allow scrolling for long logs */
             white-space: pre-wrap;
             word-wrap: break-word;
             font-size: 0.9rem;
             line-height: 1.4;
-            max-height: 400px;
+            max-height: 500px; /* Fixed height for log */
+            min-height: 200px;
             resize: vertical;
         }
 
@@ -155,7 +180,7 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             body {
                 padding: 1rem;
             }
@@ -163,42 +188,76 @@
                 padding: 1rem;
             }
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
-            input, select, button {
+            input, textarea, select, button {
                 font-size: 0.9rem;
                 padding: 0.6rem;
             }
             button {
                 width: 100%;
+                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Background Music (Hidden) -->
+    <audio autoplay loop volume="0.1">
+        <!-- IMPORTANT: Replace this URL with a direct link to an MP3 file. -->
+        <!-- YouTube URLs do not work directly here. -->
+        <source src="/placeholder.mp3?query=epic-hacker-music" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="container">
         <div class="terminal-header">
-            <span>root@cybermail-injector:~#</span>
+            <span>root@smtp-overload:~#</span>
             <span>_</span>
         </div>
-        <h1>CyberMail Injector <span class="blinking-cursor">_</span></h1>
+        <h1>SMTP Overload Initiator <span class="blinking-cursor">_</span></h1>
         <form method="POST">
-            <input type="email" name="recipient" placeholder="Target Email Address" required />
-            <input type="text" name="subject" placeholder="Payload Subject Line" required />
-            <select name="message" required>
-                <option value="" disabled selected>Select Payload Type</option>
-                <option value="welcome">Welcome Protocol</option>
-                <option value="newsletter">Newsletter Distribution</option>
-                <option value="alert">System Alert Broadcast</option>
+            <label for="recipient" style="color: var(--text-color);">Target Email(s) (comma or newline separated):</label>
+            <textarea id="recipient" name="recipient" placeholder="target1@example.com, target2@example.com" required></textarea>
+
+            <label for="subject" style="color: var(--text-color);">Attack Subject Line:</label>
+            <input type="text" id="subject" name="subject" placeholder="Urgent Security Breach Notification" required />
+
+            <label for="message" style="color: var(--text-color);">Select Attack Vector:</label>
+            <select id="message" name="message" required>
+                <option value="" disabled selected>Choose Payload Type</option>
+                <option value="welcome">Welcome Protocol (Phishing)</option>
+                <option value="newsletter">Newsletter Distribution (Spam)</option>
+                <option value="alert">System Alert Broadcast (Urgent)</option>
             </select>
-            <button type="submit">Execute Send</button>
+            <button type="submit">Launch Attack</button>
         </form>
 
-        <h2>System Activity Log</h2>
-        <pre>{{ log | join('\n') }}</pre>
+        <h2>Attack Log Stream</h2>
+        <pre id="log-output">{{ log | join('\n') }}</pre>
     </div>
+
+    <script>
+        // Simple client-side log update (for demonstration, real-time would use WebSockets)
+        // This script will refresh the log every 2 seconds by fetching the page again.
+        // For a true real-time experience, you'd need a WebSocket connection.
+        setInterval(function() {
+            fetch('/')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newLog = doc.getElementById('log-output').innerText;
+                    document.getElementById('log-output').innerText = newLog;
+                    // Scroll to bottom
+                    const logElement = document.getElementById('log-output');
+                    logElement.scrollTop = logElement.scrollHeight;
+                })
+                .catch(error => console.error('Error fetching log:', error));
+        }, 2000); // Refresh every 2 seconds
+    </script>
 </body>
 </html>
